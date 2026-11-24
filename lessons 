@@ -1,0 +1,137 @@
+Lean Results Log and Labels
+Nov 24, 2026 · @M NWILL A K HODGE 
+Start here
+This log labels every Lean test as pass, fail or not run, and says what a pass actually proves, so students can see what works and why.
+1.  Every file gets two labels: a result label (what Lean did) and a claim label (what the passing theorem proves).
+2.  Every label gets a one-sentence Why in plain words, plus Lean's exact error text copied from the screen.
+3.  Nothing is marked PASS or FAIL until it has been run. Notes from reading a file are marked as reading-only.
+Original files are never edited. Fixes go on copies named with -fixed, and both versions are kept.
+Label key 1: result status
+Eight labels cover everything Lean can tell us. Give each file exactly one.
+Label
+Meaning
+Typical cause
+NOT RUN
+Not tested in Lean yet
+Default for every file
+PASS
+Lean accepted it: no errors, no sorry
+None
+PASS-WARN
+Accepted, with warnings
+Unused variable, deprecated name, or sorry (an unfinished proof)
+FAIL-SYNTAX
+Lean could not read the file
+Stray comment closer, broken indentation, missing end
+FAIL-PROOF
+File reads fine but a proof step does not close
+"unsolved goals", "no goals", wrong tactic
+FAIL-IMPORT
+A module or name was not found
+Wrong module path, library version differs
+FIXED-ON-COPY
+Failed first, passes after a change
+Record what changed; keep both files
+NOT LEAN
+Not Lean code
+Notes or text pasted into a .lean file
+A file containing sorry is never a clean PASS. Label it PASS-WARN and name the unfinished theorem.
+Label key 2: what a pass proves
+A pass means Lean accepts the proof of the statement exactly as written. It does not mean the file name or the comment above the theorem is true.
+Claim label
+Meaning
+Example (from reading, not yet run)
+PROVES-CLAIM
+The statement matches its name and comment
+neg_conj: the negative side of the bilateral map is the 3n-1 map mirrored
+SPOT-CHECK
+True for the listed examples only
+osc_converges_7: one number, 7, reaches 1
+TRIVIAL
+True for any input, so it says nothing
+∃ m, bilateralStep n = m
+WEAK
+True, but far less than its name suggests
+fluid_hodge_equivalence only shows some positive number exists
+MODEL-CHECK
+Your own constants agree with each other
+Firefly spec: lcm 3, 5, 7 is 105
+OPEN-TARGET
+An unproved question written as a def
+EveryOrbitEventuallyPeriodic
+Mathematical truth and Lean acceptance are separate questions. Record both.
+The Why line
+Every label gets one Why sentence a student can follow, under 25 words, next to Lean's exact message.
+1.  Say what Lean saw, in plain words.
+2.  Say which rule it teaches.
+3.  Copy Lean's message and line number from the screen. Do not retype it from memory.
+4.  For a PASS, say what it proves using a claim label.
+Format example (an illustration, not a test result): "FAIL-SYNTAX: Lean found a closing comment marker with no opening one, so it stopped reading. Comment markers must come in pairs."
+Entry template
+Copy this block for each file once it has been run.
+File: <name as uploaded>
+SHA-256 (first 8): <from the batch log>
+Tested: <date>, <Lean web editor, version shown on screen>
+Result: <label from key 1>
+Claim: <label from key 2>
+Why: <one plain sentence>
+Lean said: <exact message and line number, or "no messages">
+Copy fixed: <name of the -fixed copy, or none>
+Lesson for students: <one sentence>
+Batch log, 2026-11-24
+Ten files were uploaded and none has been run in Lean yet, so every Lean file starts as NOT RUN. The hashes are for the uploaded copies, which may not match your vault originals. Notes in the last column come from reading the code and checking the arithmetic by hand. They are not test results.
+File
+SHA-256 (first 8)
+Result
+Reading-only note
+Collatzproofsolved (PencodeIO)
+a443c844
+NOT RUN
+Ceiling-halving lemma plus Collatz spot checks, not a theorem for every n. Line 36 will likely error: the ; keeps simp inside the omega block.
+rebilatral_colatz
+60092825
+NOT RUN
+Mirror rule and the -1 and -5 cycles check out by hand. The open question is a def, not a theorem. Strongest in the batch.
+Bilateral_Collatz (clean)
+90196677
+NOT RUN
+Its only theorem is true for any function (TRIVIAL).
+Bilateral Collatz, indented copy (LeanWebDownload 1)
+937a4c42
+NOT RUN
+Same code as the clean file apart from indentation. Keep both.
+Fluid Hodge, three identical copies (1fbf8fdd, 36e86e4b, ccebde3f)
+cad0dce8
+NOT RUN
+Octave theorem is the real content. The equivalence theorem is WEAK. Import path is valid in current Mathlib. Test one copy.
+MathLabHodge 2-step
+118e8a8a
+NOT RUN
+Stray comment closer on line 77 should be a parse error. The four theorems are true statements by hand check.
+DumbLuckFireflySpec
+04c15b88
+NOT RUN
+Spec constants agree by hand check (63 remaining, lcm 105). MODEL-CHECK.
+Spiral Automata Concordance (OneNote paste)
+5e1d3861
+NOT LEAN
+Text, not Lean, pasted twice in one file. Table column scrambled by the paste. Keep as is; belongs with the Spiral Codex and Living Legacy material.
+Lessons for students
+Reading this batch produced eight lessons. Each stays marked "from reading" until a Lean run confirms it.
+1.  A pass is not a proof of the title. ∃ m, bilateralStep n = m passes for every function. Check the statement, not the file name. What works: label the claim strength next to the result.
+2.  Examples are not "for every n". runOsc 20 7 = 1 shows one number reaches 1. Collatz needs a statement over all n. What works: label examples SPOT-CHECK.
+3.  Write an unproved goal as a def. EveryOrbitEventuallyPeriodic in rebilatral states the open question without asking Lean to accept it. What works: name the target honestly, prove the true pieces around it.
+4.  A ; after an inner by stays inside that block (from reading, confirm in the editor). In have h : P := by omega; simp [h], the simp runs after omega has already finished, which Lean reports as "no goals".
+5.  Comment markers come in pairs. A /- needs a closing -/. MathLabHodge has an extra closer on line 77 (from reading).
+6.  Copying from a phone can drift the indentation. MathLabHodge and Firefly shift right line by line. Keep each tactic block aligned, and keep the original paste too.
+7.  Library paths change over time. In current Mathlib, Mathlib.Data.Real.Basic is a deprecated shim (since 2026-08-27) and the real file is Mathlib.Basic.Real.Basic. This was checked against the Mathlib source on 2026-11-24. Always record the Mathlib version with a result.
+8.  Compare by hash before debating versions. Three of these files were byte-for-byte identical, and two more differed only in indentation.
+Next action
+Run six files in the Lean web editor (live.lean-lang.org) in this order, then set each Result dropdown above and fill one entry template per file.
+1.  rebilatral_colatz: the best chance of a clean pass.
+2.  Collatzproofsolved: likely to fail, so it teaches the most.
+3.  MathLabHodge.
+4.  DumbLuckFireflySpec.
+5.  Fluid Hodge: one of the three identical copies is enough.
+6.  Bilateral_Collatz, the clean copy.
+Paste each file unedited. Copy Lean's messages exactly, and note the Lean and Mathlib versions the editor shows. Identical hashes share one result, and the indented Bilateral copy only needs a run if the clean one passes.
